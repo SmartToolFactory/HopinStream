@@ -1,12 +1,9 @@
 package com.smarttoolfactory.data.api
 
-import com.smarttoolfactory.data.constant.BASE_URL
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.model.remote.sso.SessionTokenDTO
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -37,12 +34,4 @@ interface HopinApi {
         @Path(value = "event_id") eventId: Long,
         @Path(value = "uuid") uuid: String
     ): StageWithStatus
-}
-
-fun getHopinApi(): HopinApi {
-    return Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(HopinApi::class.java)
 }
