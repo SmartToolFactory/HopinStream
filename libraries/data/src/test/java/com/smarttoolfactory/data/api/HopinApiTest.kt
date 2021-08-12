@@ -1,9 +1,10 @@
 package com.smarttoolfactory.data.api
 
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.smarttoolfactory.test_utils.rule.TestCoroutineRule
+import java.net.HttpURLConnection
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,8 +17,6 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.HttpURLConnection
-import java.util.concurrent.TimeUnit
 
 // TODO MockWebserver does not work properly with coroutines
 // Check out my question here:
@@ -32,15 +31,12 @@ class HopinApiTest : AbstractApiTest() {
 
         @get:Rule
         val testCoroutineRule = TestCoroutineRule()
-
-
     }
 
     /**
      * Api is the SUT to test headers, url, response and DTO objects
      */
     private lateinit var api: HopinApi
-
 
     /**
      * ❌ This test FAILS, with launch builder sometimes fail, sometimes PASSes
@@ -67,7 +63,6 @@ class HopinApiTest : AbstractApiTest() {
             }
             advanceUntilIdle()
 
-
 //            launch(testCoroutineScope.coroutineContext) {
             val request = withContext(coroutineContext) {
                 mockWebServer.takeRequest(1, TimeUnit.SECONDS)
@@ -75,10 +70,7 @@ class HopinApiTest : AbstractApiTest() {
 
             // THEN
             Truth.assertThat(request?.path).isEqualTo("/users/sso")
-
-
         }
-
 
     /**
      * ❌ This test FAILS, with launch builder sometimes fail, sometimes PASSes
@@ -115,9 +107,7 @@ class HopinApiTest : AbstractApiTest() {
 
             // THEN
             Truth.assertThat(sessionToken).isNotNull()
-
         }
-
 
     @Before
     override fun setUp() {

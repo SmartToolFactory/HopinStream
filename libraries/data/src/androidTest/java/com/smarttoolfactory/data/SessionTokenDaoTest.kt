@@ -19,10 +19,18 @@ class SessionTokenDaoTest : AbstractDaoTest() {
     companion object {
 
         val token =
-            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4YjQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicmVnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xlIjoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWdhdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4YjQzYzczZDgi" +
+                "LCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicmVnaXN0cmF0aW9uX2lkIjo1Mz" +
+                "c0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xlIjoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29u" +
+                "biI6dHJ1ZSwiZGF0YV9zZWdyZWdhdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4" +
+                "z0FltcmPt_YdesY"
 
         val newToken =
-            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiMjM4ZDBkMi1iMmUwLTQ1ZjUtYTY3Mi1jM2I5MTI1OWU2YzkiLCJzdWIiOjc1MDQ4OTQsInBlcnNvbmFfaWQiOjY1MTMzMiwicmVnaXN0cmF0aW9uX2lkIjoxMDI1OTk5NywiZXZlbnRfaWQiOjIzNTM5OSwicm9sZSI6Im9yZ2FuaXNlciIsIm11bHRpcGxlX2Nvbm4iOnRydWUsImRhdGFfc2VncmVnYXRlZCI6ZmFsc2V9.pOBnFApLXlK3D6re_U9ZrgJrfgWdMBUIPpGMJbsXVAY"
+            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiMjM4ZDBkMi1iMmUwLTQ1ZjUtYTY3Mi1jM2I5MTI1OWU2Yz" +
+                "kiLCJzdWIiOjc1MDQ4OTQsInBlcnNvbmFfaWQiOjY1MTMzMiwicmVnaXN0cmF0aW9uX2lkI" +
+                "joxMDI1OTk5NywiZXZlbnRfaWQiOjIzNTM5OSwicm9sZSI6Im9yZ2FuaXNlciIsIm11bHRpc" +
+                "GxlX2Nvbm4iOnRydWUsImRhdGFfc2VncmVnYXRlZCI6ZmFsc2V9.pOBnFApLXlK3D6re_" +
+                "U9ZrgJrfgWdMBUIPpGMJbsXVAY"
     }
 
     @Test
@@ -51,9 +59,7 @@ class SessionTokenDaoTest : AbstractDaoTest() {
         Truth.assertThat(sessionToken).isNotNull()
         Truth.assertThat(token).isEqualTo(sessionToken!!.token)
         Truth.assertThat(sessionToken.fetchDate).isEqualTo(currentTime)
-
     }
-
 
     @Test
     fun givenDBPopulatedShouldDeleteExistingTokenAndReturnNew() = runBlocking {
@@ -75,9 +81,7 @@ class SessionTokenDaoTest : AbstractDaoTest() {
         Truth.assertThat(newSessionToken.token).isEqualTo(newToken)
         Truth.assertThat(newSessionToken.fetchDate).isEqualTo(newTime)
         Truth.assertThat(oldSessionToken).isNotEqualTo(newSessionToken)
-
     }
-
 
     @Before
     override fun setUp() {

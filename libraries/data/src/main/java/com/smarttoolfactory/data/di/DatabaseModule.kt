@@ -29,5 +29,4 @@ class DatabaseModule {
     @Provides
     fun provideSessionTokenDao(appDatabase: HopinDatabase): SessionTokenDao =
         appDatabase.sessionTokenDao()
-
 }

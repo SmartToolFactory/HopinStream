@@ -1,6 +1,5 @@
 package com.smarttoolfactory.data.api
 
-
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
@@ -8,14 +7,14 @@ import com.smarttoolfactory.test_utils.RESPONSE_STAGES_JSON_PATH
 import com.smarttoolfactory.test_utils.RESPONSE_STAGE_WITH_STATUS_JSON_PATH
 import com.smarttoolfactory.test_utils.util.convertToObjectFromJson
 import com.smarttoolfactory.test_utils.util.getResourceAsText
+import java.io.IOException
+import java.net.HttpURLConnection
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.QueueDispatcher
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
-import java.io.IOException
-import java.net.HttpURLConnection
 
 // TODO JUnit5 returns error Test events were not received with Arctic Fox 2020.3.1
 
@@ -42,10 +41,16 @@ abstract class AbstractApiTest {
     }
 
     internal val cookie =
-        "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgUFbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNISUuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
+        "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgU" +
+            "FbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNIS" +
+            "UuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
 
     internal val sessionToken =
-        "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4YjQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicmVnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xlIjoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWdhdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+        "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
+            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     internal val request = SessionTokenRequest("hopincon2022")
 
@@ -63,7 +68,6 @@ abstract class AbstractApiTest {
             getResourceAsText(RESPONSE_STAGE_WITH_STATUS_JSON_PATH)
         )!!
     }
-
 
     @Before
     open fun setUp() {
@@ -103,7 +107,7 @@ abstract class AbstractApiTest {
         mockWebServer.enqueue(mockResponse.setBody(responseBody))
         println(
             "🍏 enqueueResponse() in thread: ${Thread.currentThread().name}," +
-                    " ${sessionToken.length} $mockResponse"
+                " ${sessionToken.length} $mockResponse"
         )
         return mockResponse
     }
@@ -111,7 +115,6 @@ abstract class AbstractApiTest {
     /**
      * Dispatcher to return different responses for each endpoint
      */
-
 
     inner class ResponseDispatcher : QueueDispatcher() {
 
@@ -137,8 +140,7 @@ abstract class AbstractApiTest {
                 }
 
                 else -> {
-                    println("ResponseDispatcher dispatch() in thread: ${Thread.currentThread().name}")
-                    enqueueResponse(code=HttpURLConnection.HTTP_OK)
+                    enqueueResponse(code = HttpURLConnection.HTTP_OK)
                 }
             }
         }

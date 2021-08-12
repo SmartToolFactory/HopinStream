@@ -28,7 +28,6 @@ class RemoteLoginDataSourceIml @Inject constructor(private val hopinApi: HopinAp
     ) = hopinApi.getSessionToken(cookie, eventSlug)
 }
 
-
 interface LocalLoginDataSource : LoginDataSource {
     suspend fun getSessionTokeEntity(): SessionTokenEntity?
     suspend fun saveSessionTokenEntity(sessionTokenEntity: SessionTokenEntity): Long
@@ -44,6 +43,4 @@ class LocalLoginDataSourceIml @Inject constructor(private val sessionTokenDao: S
         sessionTokenDao.insert(sessionTokenEntity)
 
     override suspend fun deleteSessionToken() = sessionTokenDao.deleteAll()
-
 }
-
