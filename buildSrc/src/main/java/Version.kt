@@ -8,7 +8,7 @@ object PluginVersion {
 }
 
 object AndroidVersion {
-    const val MIN_SDK_VERSION = 21
+    const val MIN_SDK_VERSION = 26
     const val COMPILE_SDK_VERSION = 30
     const val TARGET_SDK_VERSION = COMPILE_SDK_VERSION
     const val VERSION_CODE = 1
@@ -121,5 +121,5 @@ object TestVersion {
     const val truthVersion = "1.0.1"
 
     // MockK
-    const val mockKVersion = "1.10.0"
+    const val mockKVersion = "1.12.0"
 }

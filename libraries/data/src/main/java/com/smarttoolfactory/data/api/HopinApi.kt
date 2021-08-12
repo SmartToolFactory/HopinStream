@@ -14,9 +14,7 @@ import retrofit2.http.Path
 interface HopinApi {
 
     @POST("users/sso")
-    @Headers(
-        "Content-type: application/json"
-    )
+    @Headers("Content-type: application/json")
     suspend fun getSessionToken(
         @Header("Cookie") cookie: String,
         @Body eventSlug: SessionTokenRequest
