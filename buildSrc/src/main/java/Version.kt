@@ -47,16 +47,13 @@ object Version {
     const val NAVIGATION_VERSION = "2.3.0"
 
     // Retrofit
-    const val RETROFIT_VERSION = "2.8.1"
+    const val RETROFIT_VERSION = "2.9.0"
 
     // OkHttpClient
-    const val OK_HTTP3_VERSION = "4.8.1"
-
-    // MockWebServer
-    const val MOCK_WEB_SERVER_VERSION = "3.7.0"
+    const val OK_HTTP3_VERSION = "4.9.0"
 
     //Gson
-    const val GSON_VERSION = "2.8.4"
+    const val GSON_VERSION = "2.8.7"
 
     // Room
     const val ROOM_VERSION = "2.4.0-alpha02"
@@ -112,10 +109,10 @@ object TestVersion {
     const val robolectricVersion = "4.3.1"
     const val rulesVersion = "1.0.1"
 
-    const val coroutinesTestVersion = "1.3.7"
+    const val coroutinesTestVersion = "1.5.1"
 
     // MockWebServer
-    const val mockWebServerVersion = "4.8.1"
+    const val mockWebServerVersion = "4.9.0"
 
     // Truth Assertion
     const val truthVersion = "1.0.1"
