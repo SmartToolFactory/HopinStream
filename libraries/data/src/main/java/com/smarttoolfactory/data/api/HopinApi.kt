@@ -17,7 +17,7 @@ interface HopinApi {
     @Headers(
         "Content-type: application/json"
     )
-    suspend fun getEvent(
+    suspend fun getSessionToken(
         @Header("Cookie") cookie: String,
         @Body eventSlug: SessionTokenRequest
     ): SessionTokenDTO

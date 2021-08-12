@@ -8,7 +8,7 @@ import com.smarttoolfactory.data.model.local.SessionTokenEntity
 interface SessionTokenDao : BaseDao<SessionTokenEntity> {
 
     @Query("SELECT * FROM session_token")
-    suspend fun getSessionToken(): SessionTokenEntity
+    suspend fun getSessionToken(): SessionTokenEntity?
 
     @Query("DELETE FROM session_token")
     suspend fun deleteAll()
