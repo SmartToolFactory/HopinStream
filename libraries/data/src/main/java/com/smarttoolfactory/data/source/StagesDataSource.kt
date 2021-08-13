@@ -4,7 +4,6 @@ import com.smarttoolfactory.data.api.HopinApi
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
 import javax.inject.Inject
-import retrofit2.http.GET
 
 interface StagesDataSource {
 

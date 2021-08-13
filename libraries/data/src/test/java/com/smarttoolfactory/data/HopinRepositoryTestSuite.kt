@@ -16,7 +16,6 @@ import org.junit.runners.Suite
 )
 class HopinRepositoryTestSuite
 
-
 // Runs all unit tests with JUnit4.
 @RunWith(Suite::class)
 @Suite.SuiteClasses(

@@ -19,7 +19,6 @@ interface StageRepository {
     ): StageWithStatus
 }
 
-
 class StageRepositoryImpl @Inject constructor(private val stagesDataSource: StagesDataSource) :
     StageRepository {
 
@@ -31,5 +30,4 @@ class StageRepositoryImpl @Inject constructor(private val stagesDataSource: Stag
         eventId: Long,
         uuid: String
     ): StageWithStatus = stagesDataSource.getStageWithStatus(token, eventId, uuid)
-
 }

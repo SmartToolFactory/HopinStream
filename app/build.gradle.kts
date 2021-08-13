@@ -96,6 +96,8 @@ android {
 dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation(project(Modules.AndroidLibrary.DOMAIN))
     implementation(project(Modules.AndroidLibrary.DATA))
 
     addAppModuleDependencies()
