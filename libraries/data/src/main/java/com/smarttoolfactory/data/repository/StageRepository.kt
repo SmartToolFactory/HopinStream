@@ -1,12 +1,11 @@
-package com.smarttoolfactory.data.source
+package com.smarttoolfactory.data.repository
 
-import com.smarttoolfactory.data.api.HopinApi
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
+import com.smarttoolfactory.data.source.StagesDataSource
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
 import javax.inject.Inject
-import retrofit2.http.GET
 
-interface StagesDataSource {
+interface StageRepository {
 
     suspend fun getStages(
         token: String,
@@ -20,14 +19,17 @@ interface StagesDataSource {
     ): StageWithStatus
 }
 
-class StagesDataSourceImpl @Inject constructor(private val hopinApi: HopinApi) : StagesDataSource {
+
+class StageRepositoryImpl @Inject constructor(private val stagesDataSource: StagesDataSource) :
+    StageRepository {
 
     override suspend fun getStages(token: String, eventId: Long): Stages =
-        hopinApi.getStages(token, eventId)
+        stagesDataSource.getStages(token, eventId)
 
     override suspend fun getStageWithStatus(
         token: String,
         eventId: Long,
         uuid: String
-    ): StageWithStatus = hopinApi.getStageWithStatus(token, eventId, uuid)
+    ): StageWithStatus = stagesDataSource.getStageWithStatus(token, eventId, uuid)
+
 }
