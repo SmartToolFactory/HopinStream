@@ -58,6 +58,4 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun deleteSessionToken() {
         localDataSource.deleteSessionToken()
     }
-
-
 }

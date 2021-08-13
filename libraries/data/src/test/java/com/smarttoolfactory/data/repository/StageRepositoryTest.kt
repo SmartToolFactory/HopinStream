@@ -20,7 +20,6 @@ import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
 
-
 class StageRepositoryTest {
 
     private lateinit var repository: StageRepository
@@ -29,17 +28,15 @@ class StageRepositoryTest {
 
     private val cookie =
         "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgUFbGzk" +
-                "s3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNISUuZl6--Rt" +
-                "s4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
+            "s3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNISUuZl6--Rt" +
+            "s4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
 
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4YjQz" +
-                "YzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicmVnaXN0cmF0" +
-                "aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xlIjoib3JnYW5pc2VyI" +
-                "iwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWdhdGVkIjpmYWxzZX0.AAh" +
-                "rVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
-
-
+            "YzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicmVnaXN0cmF0" +
+            "aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xlIjoib3JnYW5pc2VyI" +
+            "iwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWdhdGVkIjpmYWxzZX0.AAh" +
+            "rVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val stages by lazy {
         convertToObjectFromJson<Stages>(
@@ -60,7 +57,7 @@ class StageRepositoryTest {
         val errorMessage = "HTTP 403"
         val eventId = 108564L
         coEvery { dataSource.getStages(sessionToken, eventId + 5) } throws
-                HttpException(Response.error<Stages>(403, errorMessage.toResponseBody()))
+            HttpException(Response.error<Stages>(403, errorMessage.toResponseBody()))
 
         // WHEN
         val expected = try {
@@ -101,7 +98,7 @@ class StageRepositoryTest {
         val eventId = 108564L
         val uuid = "82604620-18b0-424c-b550-c74019551ba8"
         coEvery { dataSource.getStageWithStatus(sessionToken, eventId, uuid + "k") } throws
-                HttpException(Response.error<Stages>(404, errorMessage.toResponseBody()))
+            HttpException(Response.error<Stages>(404, errorMessage.toResponseBody()))
 
         // WHEN
         val expected = try {
@@ -134,10 +131,9 @@ class StageRepositoryTest {
         coVerify(exactly = 1) { dataSource.getStageWithStatus(sessionToken, eventId, uuid) }
     }
 
-
     @Before
     fun setUp() {
-        repository = StageRepositoryImpl( dataSource)
+        repository = StageRepositoryImpl(dataSource)
     }
 
     @After
