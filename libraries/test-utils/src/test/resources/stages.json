@@ -1,0 +1,24 @@
+{
+  "stages": [
+    {
+      "name": "Pre-recorded Stage",
+      "stream_provider": "youtube",
+      "video_url": "EpErMqMyNN4",
+      "uuid": "8d772f41-d6e0-4f36-a1a4-5754e3073b9b",
+      "external_id": "YUIm9wKaa6tqEirjOfZzxe2VI",
+      "is_usable": true,
+      "is_live": false,
+      "stage_channel_name": "stage_8d772f41-d6e0-4f36-a1a4-5754e3073b9b"
+    },
+    {
+      "name": "Hopin Stage",
+      "stream_provider": "hopin",
+      "video_url": "",
+      "uuid": "82604620-18b0-424c-b550-c74019551ba8",
+      "external_id": "I4lIzQjrK7mPrIOar2ndQ82oI",
+      "is_usable": true,
+      "is_live": false,
+      "stage_channel_name": "stage_82604620-18b0-424c-b550-c74019551ba8"
+    }
+  ]
+}

@@ -29,6 +29,10 @@ allprojects {
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
     }
+
+    configurations.all {
+        resolutionStrategy.force("org.objenesis:objenesis:2.6")
+    }
 }
 
 subprojects {

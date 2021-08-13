@@ -139,6 +139,7 @@ object TestDeps {
 
     // MockK
     const val MOCK_K = "io.mockk:mockk:${TestVersion.mockKVersion}"
+    const val MOCK_K_ANDROID = "io.mockk:mockk-android:${TestVersion.mockKVersion}"
 
     // Truth
     const val TRUTH = "com.google.truth:truth:${TestVersion.truthVersion}"
