@@ -14,9 +14,9 @@ import com.smarttoolfactory.test_utils.test_observer.test
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -37,7 +37,6 @@ class LoginUseCaseTest {
 
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
-
 
     private lateinit var loginUseCase: LoginUseCase
 
@@ -105,6 +104,36 @@ class LoginUseCaseTest {
             coVerify(exactly = 1) { connectivityManager.isConnected() }
             coVerify(exactly = 1) { repository.fetchSessionTokenFromLocal() }
             coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
+        }
+
+    @Test
+    fun `given token in db not expired should return UserSession`() =
+        testCoroutineRule.runBlockingTest {
+            // GIVEN
+            val sessionTokenEntity = SessionTokenEntity(sessionToken, System.currentTimeMillis())
+            val eventId = 108564L
+
+            coEvery { connectivityManager.isConnected() } returns true
+            coEvery { repository.fetchSessionTokenFromLocal() } returns sessionTokenEntity
+            coEvery { jwtDecoder.decodeTokenToEventId(sessionToken) } returns eventId
+
+            val testObserver = loginUseCase.getUserSession().test(this)
+
+            // THEN
+            testObserver
+                .assertComplete()
+                .assertValue { userSession ->
+                    userSession.sessionToken == sessionTokenEntity.token &&
+                            userSession.evenId == eventId
+                }
+                .dispose()
+
+            // Verify that these functions called in this order
+            coVerifySequence {
+                connectivityManager.isConnected()
+                repository.fetchSessionTokenFromLocal()
+                jwtDecoder.decodeTokenToEventId(sessionToken)
+            }
         }
 
     @Before
