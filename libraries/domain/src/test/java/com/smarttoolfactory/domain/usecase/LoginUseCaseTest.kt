@@ -1,19 +1,25 @@
 package com.smarttoolfactory.domain.usecase
 
-import com.google.common.truth.Truth
+import com.smarttoolfactory.data.constant.TOKEN_REFRESH_INTERVAL
+import com.smarttoolfactory.data.model.local.SessionTokenEntity
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.repository.LoginRepository
 import com.smarttoolfactory.domain.dispatcher.UseCaseDispatchers
 import com.smarttoolfactory.domain.error.NoConnectivityException
+import com.smarttoolfactory.domain.error.TokenNotAvailableException
 import com.smarttoolfactory.domain.mapper.ConnectivityManager
 import com.smarttoolfactory.domain.mapper.JWTDecoder
+import com.smarttoolfactory.test_utils.rule.TestCoroutineRule
+import com.smarttoolfactory.test_utils.test_observer.test
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -28,6 +34,10 @@ import org.junit.Test
  * return event id and session token
  */
 class LoginUseCaseTest {
+
+    @get:Rule
+    val testCoroutineRule = TestCoroutineRule()
+
 
     private lateinit var loginUseCase: LoginUseCase
 
@@ -53,23 +63,49 @@ class LoginUseCaseTest {
         UseCaseDispatchers(Dispatchers.Main, Dispatchers.Main, Dispatchers.Main)
 
     @Test
-    fun `given no internet connection should throw NoConnectivityException`() {
-        // GIVEN
-        coEvery { connectivityManager.isConnected() } returns false
+    fun `given no internet connection should throw NoConnectivityException`() =
+        testCoroutineRule.runBlockingTest {
+            // GIVEN
+            coEvery { connectivityManager.isConnected() } returns false
 
-        // WHEN
-        val expected = try {
-            loginUseCase.getUserSession()
-        } catch (e: NoConnectivityException) {
-            e
+            // WHEN
+            val testObserver = loginUseCase.getUserSession().test(this)
+
+            // THEN
+            testObserver
+                .assertNotComplete()
+                .assertError(NoConnectivityException::class.java)
+                .dispose()
+
+            coVerify(exactly = 1) { connectivityManager.isConnected() }
+            coVerify(exactly = 0) { repository.fetchSessionTokenFromLocal() }
+            coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
         }
-        // THEN
-        Truth.assertThat(expected).isInstanceOf(NoConnectivityException::class.java)
 
-        // Verify that stages for valid event is not called
-        coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
-        coVerify(exactly = 0) { repository.fetchSessionTokenFromLocal() }
-    }
+    @Test
+    fun `given token in db but expired should throw TokenNotAvailableException`() =
+        testCoroutineRule.runBlockingTest {
+            // GIVEN
+            // One minute passed after token refresh time
+            val sessionTokenEntity = SessionTokenEntity(
+                sessionToken,
+                System.currentTimeMillis() - TOKEN_REFRESH_INTERVAL - 60_000
+            )
+            coEvery { connectivityManager.isConnected() } returns true
+            coEvery { repository.fetchSessionTokenFromLocal() } returns sessionTokenEntity
+
+            val testObserver = loginUseCase.getUserSession().test(this)
+
+            // THEN
+            testObserver
+                .assertNotComplete()
+                .assertError(TokenNotAvailableException::class.java)
+                .dispose()
+
+            coVerify(exactly = 1) { connectivityManager.isConnected() }
+            coVerify(exactly = 1) { repository.fetchSessionTokenFromLocal() }
+            coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
+        }
 
     @Before
     fun setUp() {
