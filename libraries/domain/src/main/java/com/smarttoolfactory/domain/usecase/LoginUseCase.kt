@@ -3,6 +3,7 @@ package com.smarttoolfactory.domain.usecase
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.repository.LoginRepository
 import com.smarttoolfactory.domain.dispatcher.UseCaseDispatchers
+import com.smarttoolfactory.domain.error.NoConnectivityException
 import com.smarttoolfactory.domain.mapper.ConnectivityManager
 import com.smarttoolfactory.domain.mapper.JWTDecoder
 import com.smarttoolfactory.domain.model.UserSession
@@ -20,7 +21,7 @@ class LoginUseCase @Inject constructor(
      * Chek if there is a session token that hasn't expired
      */
     fun getUserSession(): Flow<UserSession> {
-        TODO()
+       throw  NoConnectivityException()
     }
 
     /**

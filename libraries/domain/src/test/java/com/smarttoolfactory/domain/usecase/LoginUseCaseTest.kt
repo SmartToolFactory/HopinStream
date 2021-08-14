@@ -1,11 +1,15 @@
 package com.smarttoolfactory.domain.usecase
 
+import com.google.common.truth.Truth
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.repository.LoginRepository
 import com.smarttoolfactory.domain.dispatcher.UseCaseDispatchers
+import com.smarttoolfactory.domain.error.NoConnectivityException
 import com.smarttoolfactory.domain.mapper.ConnectivityManager
 import com.smarttoolfactory.domain.mapper.JWTDecoder
 import io.mockk.clearMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
@@ -33,15 +37,15 @@ class LoginUseCaseTest {
 
     private val cookie =
         "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgU" +
-            "FbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNIS" +
-            "UuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
+                "FbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNIS" +
+                "UuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
 
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
-            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
-            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
-            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
-            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+                "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+                "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+                "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+                "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val request = SessionTokenRequest("hopincon2022")
 
@@ -51,10 +55,20 @@ class LoginUseCaseTest {
     @Test
     fun `given no internet connection should throw NoConnectivityException`() {
         // GIVEN
+        coEvery { connectivityManager.isConnected() } returns false
 
         // WHEN
-
+        val expected = try {
+            loginUseCase.getUserSession()
+        } catch (e: NoConnectivityException) {
+            e
+        }
         // THEN
+        Truth.assertThat(expected).isInstanceOf(NoConnectivityException::class.java)
+
+        // Verify that stages for valid event is not called
+        coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
+        coVerify(exactly = 0) { repository.fetchSessionTokenFromLocal() }
     }
 
     @Before
