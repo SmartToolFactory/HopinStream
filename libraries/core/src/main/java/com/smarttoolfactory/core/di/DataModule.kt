@@ -1,5 +1,7 @@
 package com.smarttoolfactory.core.di
 
+import com.smarttoolfactory.core.connectivity.ConnectionManager
+import com.smarttoolfactory.core.connectivity.ConnectionManagerImpl
 import com.smarttoolfactory.core.hopin.JWTDecoderImpl
 import com.smarttoolfactory.data.di.DatabaseModule
 import com.smarttoolfactory.data.di.NetworkModule
@@ -76,6 +78,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindJWTDecoder(jwtDecoderImpl: JWTDecoderImpl): JWTDecoder
+
+    @Singleton
+    @Binds
+    fun bindConnectionManager(connectionManager: ConnectionManagerImpl): ConnectionManager
 }
 
 /**
