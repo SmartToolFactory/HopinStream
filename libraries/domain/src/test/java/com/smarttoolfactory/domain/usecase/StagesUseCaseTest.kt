@@ -5,6 +5,7 @@ import com.smarttoolfactory.data.repository.StageRepository
 import com.smarttoolfactory.domain.error.StageNotAvailableException
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
 import com.smarttoolfactory.test_utils.RESPONSE_STAGES_JSON_PATH
+import com.smarttoolfactory.test_utils.RESPONSE_STAGE_WITH_NO_ACTIVE_JSON_PATH
 import com.smarttoolfactory.test_utils.RESPONSE_STAGE_WITH_STATUS_JSON_PATH
 import com.smarttoolfactory.test_utils.rule.TestCoroutineRule
 import com.smarttoolfactory.test_utils.test_observer.test
@@ -19,6 +20,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.NotActiveException
 
 class StagesUseCaseTest {
 
@@ -31,10 +33,10 @@ class StagesUseCaseTest {
 
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
-                "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
-                "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
-                "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
-                "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val eventId = 108564L
     val uuid = "82604620-18b0-424c-b550-c74019551ba8"
@@ -48,6 +50,12 @@ class StagesUseCaseTest {
     val stageWithStages by lazy {
         convertToObjectFromJson<StageWithStatus>(
             getResourceAsText(RESPONSE_STAGE_WITH_STATUS_JSON_PATH)
+        )!!
+    }
+
+    val stageWithNoActiveLinks by lazy {
+        convertToObjectFromJson<StageWithStatus>(
+            getResourceAsText(RESPONSE_STAGE_WITH_NO_ACTIVE_JSON_PATH)
         )!!
     }
 
@@ -93,7 +101,7 @@ class StagesUseCaseTest {
             // THEN
             testObserver
                 .assertNotComplete()
-                .assertError(stageException)
+                .assertError(StageNotAvailableException::class.java)
                 .dispose()
 
             coVerifySequence {
