@@ -13,6 +13,7 @@ import com.smarttoolfactory.test_utils.util.getResourceAsText
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before
@@ -30,12 +31,13 @@ class StagesUseCaseTest {
 
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
-            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
-            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
-            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
-            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+                "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+                "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+                "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+                "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val eventId = 108564L
+    val uuid = "82604620-18b0-424c-b550-c74019551ba8"
 
     val stages by lazy {
         convertToObjectFromJson<Stages>(
@@ -74,6 +76,30 @@ class StagesUseCaseTest {
     @Test
     fun `given exception returned from stage with stats should return exception`() =
         testCoroutineRule.runBlockingTest {
+
+            // GIVEN
+            val stageException = StageNotAvailableException("Stage not found")
+            coEvery {
+                repository.getStages(sessionToken, eventId)
+            } returns stages
+
+            coEvery {
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            } throws stageException
+
+            // WHEN
+            val testObserver = stagesUseCase.getVideoLinks(sessionToken, eventId).test(this)
+
+            // THEN
+            testObserver
+                .assertNotComplete()
+                .assertError(stageException)
+                .dispose()
+
+            coVerifySequence {
+                repository.getStages(sessionToken, eventId)
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            }
         }
 
     @Test
