@@ -58,7 +58,7 @@ class LoginUseCase @Inject constructor(
         }
             .map { sessionTokenEntity ->
 
-              val token =  sessionTokenEntity.token
+                val token = sessionTokenEntity.token
                 // Decode eventId from session token
                 val eventId = jwtDecoder.decodeTokenToEventId(token)
 
