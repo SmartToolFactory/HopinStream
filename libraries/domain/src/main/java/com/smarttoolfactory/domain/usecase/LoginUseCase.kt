@@ -53,6 +53,20 @@ class LoginUseCase @Inject constructor(
         cookie: String,
         eventSlug: SessionTokenRequest
     ): Flow<UserSession> {
-        TODO()
+        return flow {
+            emit(repository.fetchSessionTokenFromRemote(cookie, eventSlug))
+        }
+            .map { sessionTokenEntity ->
+
+              val token =  sessionTokenEntity.token
+                // Decode eventId from session token
+                val eventId = jwtDecoder.decodeTokenToEventId(token)
+
+                repository.deleteSessionToken()
+                repository.saveSessionToken(sessionTokenEntity)
+
+                UserSession(sessionToken = token, eventId)
+            }
+            .flowOn(dispatcherProvider.defaultDispatcher)
     }
 }

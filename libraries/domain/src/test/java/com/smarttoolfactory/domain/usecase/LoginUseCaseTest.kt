@@ -21,6 +21,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.UnsupportedEncodingException
 
 /**
  * This part is written with TDD
@@ -58,7 +59,6 @@ class LoginUseCaseTest {
 
     private val dispatcherProvider: UseCaseDispatchers =
         UseCaseDispatchers(Dispatchers.Main, Dispatchers.Main, Dispatchers.Main)
-
 
     @Test
     fun `given token in db but expired should throw TokenNotAvailableException`() =
@@ -113,7 +113,6 @@ class LoginUseCaseTest {
             }
         }
 
-
     @Test
     fun `given token fetched from remote should delete old token save and return new token`() =
         testCoroutineRule.runBlockingTest {
@@ -131,7 +130,7 @@ class LoginUseCaseTest {
             coEvery { repository.saveSessionToken(sessionTokenEntity) } returns 1
 
             // WHEN
-            val testObserver = loginUseCase.createUserSession(cookie,request).test(this)
+            val testObserver = loginUseCase.createUserSession(cookie, request).test(this)
 
             // THEN
             testObserver
@@ -148,6 +147,44 @@ class LoginUseCaseTest {
                 repository.deleteSessionToken()
                 repository.saveSessionToken(sessionTokenEntity)
             }
+        }
+
+    @Test
+    fun `given UnsupportedEncodingException occurred while parsing should throw this exception`() =
+        testCoroutineRule.runBlockingTest {
+
+            // GIVEN
+
+            val sessionTokenEntity = SessionTokenEntity(sessionToken, System.currentTimeMillis())
+            val eventId = 108564L
+            coEvery {
+                repository.fetchSessionTokenFromRemote(cookie, request)
+            } returns sessionTokenEntity
+
+            coEvery {
+                jwtDecoder.decodeTokenToEventId(sessionToken)
+            } throws UnsupportedEncodingException()
+
+            coEvery { repository.deleteSessionToken() } just Runs
+            coEvery { repository.saveSessionToken(sessionTokenEntity) } returns 1
+
+            // WHEN
+            val testObserver = loginUseCase.createUserSession(cookie, request).test(this)
+
+            // THEN
+            testObserver
+                .assertNotComplete()
+                .assertError(UnsupportedEncodingException::class.java)
+                .dispose()
+
+            coVerifySequence {
+                repository.fetchSessionTokenFromRemote(cookie, request)
+                jwtDecoder.decodeTokenToEventId(sessionToken)
+            }
+
+            coVerify(exactly = 0) { repository.deleteSessionToken() }
+            coVerify(exactly = 0) { repository.saveSessionToken(sessionTokenEntity) }
+
         }
 
     @Before
