@@ -28,17 +28,14 @@ class StagesUseCaseTest {
 
     private val repository: StageRepository = mockk()
 
-
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
-                "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
-                "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
-                "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
-                "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
-
+            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val eventId = 108564L
-
 
     val stages by lazy {
         convertToObjectFromJson<Stages>(
@@ -72,27 +69,22 @@ class StagesUseCaseTest {
 
             coVerify(exactly = 1) { repository.getStages(sessionToken, eventId) }
             coVerify(exactly = 0) { repository.getStageWithStatus(any(), any(), any()) }
-
         }
 
     @Test
     fun `given exception returned from stage with stats should return exception`() =
         testCoroutineRule.runBlockingTest {
-
         }
 
     @Test
     fun `given no active broadcasts should return InActiveBroadcastException`() =
         testCoroutineRule.runBlockingTest {
-
         }
 
     @Test
     fun `given valid link exists should return list of stream urls`() =
         testCoroutineRule.runBlockingTest {
-
         }
-
 
     @Before
     fun setUp() {
