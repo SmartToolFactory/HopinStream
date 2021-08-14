@@ -2,6 +2,7 @@ package com.smarttoolfactory.domain.usecase
 
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.data.repository.StageRepository
+import com.smarttoolfactory.domain.error.InActiveBroadcastException
 import com.smarttoolfactory.domain.error.StageNotAvailableException
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
 import javax.inject.Inject
@@ -46,7 +47,21 @@ class StagesUseCase @Inject constructor(private val repository: StageRepository)
                 getStageWithStatus(token, eventId, uuid)
             }
             .map {
-                TODO()
+                it.videoChannels
+                    .filter { videoChannel ->
+                        (
+                            videoChannel.deliveryType == "hopin" ||
+                                videoChannel.deliveryType == "ivs"
+                            ) &&
+                            videoChannel.status == "active"
+                    }.map { channel ->
+                        channel.streamUrl
+                    }
+            }
+            .map {
+                if (it.isEmpty()) {
+                    throw InActiveBroadcastException()
+                } else it
             }
     }
 }

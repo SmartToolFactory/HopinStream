@@ -2,8 +2,10 @@ package com.smarttoolfactory.domain.usecase
 
 import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.data.repository.StageRepository
+import com.smarttoolfactory.domain.error.InActiveBroadcastException
 import com.smarttoolfactory.domain.error.StageNotAvailableException
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
+import com.smarttoolfactory.myapplication.model.broadcast.VideoChannels
 import com.smarttoolfactory.test_utils.RESPONSE_STAGES_JSON_PATH
 import com.smarttoolfactory.test_utils.RESPONSE_STAGE_WITH_NO_ACTIVE_JSON_PATH
 import com.smarttoolfactory.test_utils.RESPONSE_STAGE_WITH_STATUS_JSON_PATH
@@ -20,7 +22,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.NotActiveException
 
 class StagesUseCaseTest {
 
@@ -41,22 +42,37 @@ class StagesUseCaseTest {
     private val eventId = 108564L
     val uuid = "82604620-18b0-424c-b550-c74019551ba8"
 
-    val stages by lazy {
+    private val stages by lazy {
         convertToObjectFromJson<Stages>(
             getResourceAsText(RESPONSE_STAGES_JSON_PATH)
         )!!
     }
 
-    val stageWithStages by lazy {
+    private val stageWithStatus by lazy {
         convertToObjectFromJson<StageWithStatus>(
             getResourceAsText(RESPONSE_STAGE_WITH_STATUS_JSON_PATH)
         )!!
     }
 
-    val stageWithNoActiveLinks by lazy {
+    private val stageWithNoActiveLinks by lazy {
         convertToObjectFromJson<StageWithStatus>(
             getResourceAsText(RESPONSE_STAGE_WITH_NO_ACTIVE_JSON_PATH)
         )!!
+    }
+
+    private val urls: List<String> by lazy {
+        stageWithStatus.videoChannels
+
+            .filter { videoChannel: VideoChannels ->
+                (
+                    videoChannel.deliveryType == "hopin" ||
+                        videoChannel.deliveryType == "ivs"
+                    ) &&
+                    videoChannel.status == "active"
+            }
+            .map { channel ->
+                channel.streamUrl
+            }
     }
 
     @Test
@@ -115,7 +131,6 @@ class StagesUseCaseTest {
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
-            val stageException = StageNotAvailableException("Stage not found")
             coEvery {
                 repository.getStages(sessionToken, eventId)
             } returns stages
@@ -130,7 +145,7 @@ class StagesUseCaseTest {
             // THEN
             testObserver
                 .assertNotComplete()
-                .assertError(NotActiveException::class.java)
+                .assertError(InActiveBroadcastException::class.java)
                 .dispose()
 
             coVerifySequence {
@@ -142,6 +157,26 @@ class StagesUseCaseTest {
     @Test
     fun `given valid link exists should return list of stream urls`() =
         testCoroutineRule.runBlockingTest {
+
+            // GIVEN
+            coEvery {
+                repository.getStages(sessionToken, eventId)
+            } returns stages
+
+            coEvery {
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            } returns stageWithStatus
+
+            // WHEN
+            val testObserver = stagesUseCase.getVideoLinks(sessionToken, eventId).test(this)
+
+            // THEN
+            testObserver.assertValueAt(0, urls)
+
+            coVerifySequence {
+                repository.getStages(sessionToken, eventId)
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            }
         }
 
     @Before
