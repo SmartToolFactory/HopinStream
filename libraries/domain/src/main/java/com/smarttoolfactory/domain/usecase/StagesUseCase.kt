@@ -4,13 +4,13 @@ import com.smarttoolfactory.data.model.remote.broadcast.Stages
 import com.smarttoolfactory.data.repository.StageRepository
 import com.smarttoolfactory.domain.error.StageNotAvailableException
 import com.smarttoolfactory.myapplication.model.broadcast.StageWithStatus
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class StagesUseCase @Inject constructor(private val repository: StageRepository) {
 

@@ -113,6 +113,30 @@ class StagesUseCaseTest {
     @Test
     fun `given no active broadcasts should return InActiveBroadcastException`() =
         testCoroutineRule.runBlockingTest {
+
+            // GIVEN
+            val stageException = StageNotAvailableException("Stage not found")
+            coEvery {
+                repository.getStages(sessionToken, eventId)
+            } returns stages
+
+            coEvery {
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            } returns stageWithNoActiveLinks
+
+            // WHEN
+            val testObserver = stagesUseCase.getVideoLinks(sessionToken, eventId).test(this)
+
+            // THEN
+            testObserver
+                .assertNotComplete()
+                .assertError(NotActiveException::class.java)
+                .dispose()
+
+            coVerifySequence {
+                repository.getStages(sessionToken, eventId)
+                repository.getStageWithStatus(sessionToken, eventId, uuid)
+            }
         }
 
     @Test
