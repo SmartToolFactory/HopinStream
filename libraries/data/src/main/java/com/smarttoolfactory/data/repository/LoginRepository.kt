@@ -11,16 +11,13 @@ import javax.inject.Inject
 interface LoginRepository {
 
     // Local operations
-    suspend fun fetSessionTokenFromLocal(
-        cookie: String,
-        eventSlug: SessionTokenRequest
-    ): SessionTokenEntity?
+    suspend fun fetchSessionTokenFromLocal(): SessionTokenEntity?
 
     suspend fun saveSessionToken(sessionTokenEntity: SessionTokenEntity): Long
     suspend fun deleteSessionToken()
 
     // Remote operation
-    suspend fun fetSessionTokenFromRemote(
+    suspend fun fetchSessionTokenFromRemote(
         cookie: String,
         eventSlug: SessionTokenRequest
     ): SessionTokenEntity
@@ -36,7 +33,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val mapper: SessionTokenMapper
 ) : LoginRepository {
 
-    override suspend fun fetSessionTokenFromRemote(
+    override suspend fun fetchSessionTokenFromRemote(
         cookie: String,
         eventSlug: SessionTokenRequest
     ): SessionTokenEntity {
@@ -44,10 +41,7 @@ class LoginRepositoryImpl @Inject constructor(
         return mapper.map(sessionToken)
     }
 
-    override suspend fun fetSessionTokenFromLocal(
-        cookie: String,
-        eventSlug: SessionTokenRequest
-    ): SessionTokenEntity? {
+    override suspend fun fetchSessionTokenFromLocal(): SessionTokenEntity? {
         return localDataSource.getSessionTokeEntity()
     }
 

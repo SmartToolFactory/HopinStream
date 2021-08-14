@@ -52,7 +52,7 @@ class LoginRepositoryTest {
 
         // WHEN
         val sessionToken: SessionTokenEntity =
-            repository.fetSessionTokenFromRemote(cookie, request)
+            repository.fetchSessionTokenFromRemote(cookie, request)
 
         // THEN
         Truth.assertThat(sessionToken).isEqualTo(sessionTokenEntity)

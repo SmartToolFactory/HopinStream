@@ -94,10 +94,10 @@ object TestVersion {
 
     // AndroidX 
     const val androidXVersion = "1.0.0"
-    const val androidXTestCoreVersion = "1.2.0"
-    const val androidXTestExtKotlinRunnerVersion = "1.1.1"
+    const val androidXTestCoreVersion = "1.4.0"
+    const val androidXTestExtKotlinRunnerVersion = "1.1.3-rc01"
     const val androidXTestRulesVersion = "1.2.0-beta01"
-    const val archTestingVersion = "2.0.0"
+    const val archTestingVersion = "2.1.0"
 
     // Junit5
     const val junit5Version = "5.4.0"
