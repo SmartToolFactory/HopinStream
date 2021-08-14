@@ -4,9 +4,7 @@ import com.smarttoolfactory.data.constant.TOKEN_REFRESH_INTERVAL
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.repository.LoginRepository
 import com.smarttoolfactory.domain.dispatcher.UseCaseDispatchers
-import com.smarttoolfactory.domain.error.NoConnectivityException
 import com.smarttoolfactory.domain.error.TokenNotAvailableException
-import com.smarttoolfactory.domain.mapper.ConnectivityManager
 import com.smarttoolfactory.domain.mapper.JWTDecoder
 import com.smarttoolfactory.domain.model.UserSession
 import javax.inject.Inject
@@ -18,8 +16,7 @@ import kotlinx.coroutines.flow.map
 class LoginUseCase @Inject constructor(
     private val repository: LoginRepository,
     private val dispatcherProvider: UseCaseDispatchers,
-    private val jwtDecoder: JWTDecoder,
-    private val connectivityManager: ConnectivityManager
+    private val jwtDecoder: JWTDecoder
 ) {
 
     /**
@@ -31,9 +28,6 @@ class LoginUseCase @Inject constructor(
     fun getUserSession(): Flow<UserSession> {
 
         return flow {
-            if (!connectivityManager.isConnected()) {
-                throw NoConnectivityException()
-            }
             emit(repository.fetchSessionTokenFromLocal())
         }
             .map { sessionTokenEntity ->

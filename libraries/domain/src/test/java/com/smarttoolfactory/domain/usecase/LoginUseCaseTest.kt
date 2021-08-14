@@ -5,16 +5,16 @@ import com.smarttoolfactory.data.model.local.SessionTokenEntity
 import com.smarttoolfactory.data.model.remote.request.SessionTokenRequest
 import com.smarttoolfactory.data.repository.LoginRepository
 import com.smarttoolfactory.domain.dispatcher.UseCaseDispatchers
-import com.smarttoolfactory.domain.error.NoConnectivityException
 import com.smarttoolfactory.domain.error.TokenNotAvailableException
-import com.smarttoolfactory.domain.mapper.ConnectivityManager
 import com.smarttoolfactory.domain.mapper.JWTDecoder
 import com.smarttoolfactory.test_utils.rule.TestCoroutineRule
 import com.smarttoolfactory.test_utils.test_observer.test
+import io.mockk.Runs
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
@@ -27,10 +27,9 @@ import org.junit.Test
  *
  * Possible scenarios for login process
  *
- * 1. There is no internet connection
- * 2  Token is available in local db but expired
- * 3. Token is not available in local db, fetched from remote source but parse error occurred
- * 4. Given user logged in and has session token parse session token
+ * 1  Token is available in local db but expired
+ * 2. Token is not available in local db, fetched from remote source but parse error occurred
+ * 3. Given user logged in and has session token parse session token
  * return event id and session token
  */
 class LoginUseCaseTest {
@@ -42,7 +41,6 @@ class LoginUseCaseTest {
 
     private val repository: LoginRepository = mockk()
     private val jwtDecoder: JWTDecoder = mockk()
-    private val connectivityManager: ConnectivityManager = mockk()
 
     private val cookie =
         "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgU" +
@@ -61,25 +59,6 @@ class LoginUseCaseTest {
     private val dispatcherProvider: UseCaseDispatchers =
         UseCaseDispatchers(Dispatchers.Main, Dispatchers.Main, Dispatchers.Main)
 
-    @Test
-    fun `given no internet connection should throw NoConnectivityException`() =
-        testCoroutineRule.runBlockingTest {
-            // GIVEN
-            coEvery { connectivityManager.isConnected() } returns false
-
-            // WHEN
-            val testObserver = loginUseCase.getUserSession().test(this)
-
-            // THEN
-            testObserver
-                .assertNotComplete()
-                .assertError(NoConnectivityException::class.java)
-                .dispose()
-
-            coVerify(exactly = 1) { connectivityManager.isConnected() }
-            coVerify(exactly = 0) { repository.fetchSessionTokenFromLocal() }
-            coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
-        }
 
     @Test
     fun `given token in db but expired should throw TokenNotAvailableException`() =
@@ -90,9 +69,9 @@ class LoginUseCaseTest {
                 sessionToken,
                 System.currentTimeMillis() - TOKEN_REFRESH_INTERVAL - 60_000
             )
-            coEvery { connectivityManager.isConnected() } returns true
             coEvery { repository.fetchSessionTokenFromLocal() } returns sessionTokenEntity
 
+            // WHEN
             val testObserver = loginUseCase.getUserSession().test(this)
 
             // THEN
@@ -101,7 +80,6 @@ class LoginUseCaseTest {
                 .assertError(TokenNotAvailableException::class.java)
                 .dispose()
 
-            coVerify(exactly = 1) { connectivityManager.isConnected() }
             coVerify(exactly = 1) { repository.fetchSessionTokenFromLocal() }
             coVerify(exactly = 0) { jwtDecoder.decodeTokenToEventId(any()) }
         }
@@ -113,10 +91,10 @@ class LoginUseCaseTest {
             val sessionTokenEntity = SessionTokenEntity(sessionToken, System.currentTimeMillis())
             val eventId = 108564L
 
-            coEvery { connectivityManager.isConnected() } returns true
             coEvery { repository.fetchSessionTokenFromLocal() } returns sessionTokenEntity
             coEvery { jwtDecoder.decodeTokenToEventId(sessionToken) } returns eventId
 
+            // WHEN
             val testObserver = loginUseCase.getUserSession().test(this)
 
             // THEN
@@ -130,19 +108,55 @@ class LoginUseCaseTest {
 
             // Verify that these functions called in this order
             coVerifySequence {
-                connectivityManager.isConnected()
                 repository.fetchSessionTokenFromLocal()
                 jwtDecoder.decodeTokenToEventId(sessionToken)
             }
         }
 
+
+    @Test
+    fun `given token fetched from remote should delete old token save and return new token`() =
+        testCoroutineRule.runBlockingTest {
+
+            // GIVEN
+
+            val sessionTokenEntity = SessionTokenEntity(sessionToken, System.currentTimeMillis())
+            val eventId = 108564L
+            coEvery {
+                repository.fetchSessionTokenFromRemote(cookie, request)
+            } returns sessionTokenEntity
+
+            coEvery { jwtDecoder.decodeTokenToEventId(sessionToken) } returns eventId
+            coEvery { repository.deleteSessionToken() } just Runs
+            coEvery { repository.saveSessionToken(sessionTokenEntity) } returns 1
+
+            // WHEN
+            val testObserver = loginUseCase.createUserSession(cookie,request).test(this)
+
+            // THEN
+            testObserver
+                .assertComplete()
+                .assertValue { userSession ->
+                    userSession.sessionToken == sessionTokenEntity.token &&
+                            userSession.evenId == eventId
+                }
+                .dispose()
+
+            coVerifySequence {
+                repository.fetchSessionTokenFromRemote(cookie, request)
+                jwtDecoder.decodeTokenToEventId(sessionToken)
+                repository.deleteSessionToken()
+                repository.saveSessionToken(sessionTokenEntity)
+            }
+        }
+
     @Before
     fun setUp() {
-        loginUseCase = LoginUseCase(repository, dispatcherProvider, jwtDecoder, connectivityManager)
+        loginUseCase = LoginUseCase(repository, dispatcherProvider, jwtDecoder)
     }
 
     @After
     fun tearDown() {
-        clearMocks(repository, jwtDecoder, connectivityManager)
+        clearMocks(repository, jwtDecoder)
     }
 }
