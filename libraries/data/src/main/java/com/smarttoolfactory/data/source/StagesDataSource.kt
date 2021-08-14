@@ -22,11 +22,11 @@ interface StagesDataSource {
 class StagesDataSourceImpl @Inject constructor(private val hopinApi: HopinApi) : StagesDataSource {
 
     override suspend fun getStages(token: String, eventId: Long): Stages =
-        hopinApi.getStages(token, eventId)
+        hopinApi.getStages("Bearer $token", eventId)
 
     override suspend fun getStageWithStatus(
         token: String,
         eventId: Long,
         uuid: String
-    ): StageWithStatus = hopinApi.getStageWithStatus(token, eventId, uuid)
+    ): StageWithStatus = hopinApi.getStageWithStatus("Bearer $token", eventId, uuid)
 }
