@@ -2,9 +2,9 @@ package com.smarttoolfactory.domain.error
 
 import java.io.IOException
 
-class NoConnectivityException : IOException()
+class NoConnectivityException(message: String? = null) : IOException()
 
-class TokenNotAvailableException : RuntimeException()
+class TokenNotAvailableException(message: String? = null) : RuntimeException()
 
 /**
  * Occurs when there is no stage available

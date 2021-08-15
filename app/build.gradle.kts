@@ -6,7 +6,7 @@ plugins {
     id(Plugins.ANDROID_APPLICATION_PLUGIN)
     id(Plugins.KOTLIN_ANDROID_PLUGIN)
     id(Plugins.KOTLIN_KAPT_PLUGIN)
-//    id(Plugins.DAGGER_HILT_PLUGIN)
+    id(Plugins.DAGGER_HILT_PLUGIN)
 }
 
 android {
@@ -97,6 +97,7 @@ dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
+    implementation(project(Modules.AndroidLibrary.CORE))
     implementation(project(Modules.AndroidLibrary.DOMAIN))
     implementation(project(Modules.AndroidLibrary.DATA))
 
