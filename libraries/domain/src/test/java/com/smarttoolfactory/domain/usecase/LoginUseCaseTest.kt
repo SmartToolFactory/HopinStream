@@ -16,12 +16,12 @@ import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.just
 import io.mockk.mockk
+import java.io.UnsupportedEncodingException
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.UnsupportedEncodingException
 
 /**
  * This part is written with TDD
@@ -45,15 +45,15 @@ class LoginUseCaseTest {
 
     private val cookie =
         "user.token=QDla%2Fin5Ryv071eziBpHb56KNwQQQdROaealpQHGZHvBxRKe%2FwZwgU" +
-                "FbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNIS" +
-                "UuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
+            "FbGzks3OaJRs%2BWWNSZybMwgDKNuJeX5rnwr7OggNXPX5w%3D--XxJELxpUNIS" +
+            "UuZl6--Rts4nWVmI4uJCKgVDnyT%2Bw%3D%3D"
 
     private val sessionToken =
         "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MmVhYjBlNy05ZGIyLTRmNmEtOTQyMC1hNDY4Y" +
-                "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
-                "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
-                "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
-                "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
+            "jQzYzczZDgiLCJzdWIiOjIxOTY5OTAsInBlcnNvbmFfaWQiOjMyNDUxMSwicm" +
+            "VnaXN0cmF0aW9uX2lkIjo1Mzc0NzA5LCJldmVudF9pZCI6MTA4NTY0LCJyb2xl" +
+            "Ijoib3JnYW5pc2VyIiwibXVsdGlwbGVfY29ubiI6dHJ1ZSwiZGF0YV9zZWdyZWd" +
+            "hdGVkIjpmYWxzZX0.AAhrVXd5LYYy6YReFCN3hAc7e9d4z0FltcmPt_YdesY"
 
     private val request = SessionTokenRequest("hopincon2022")
 
@@ -102,7 +102,7 @@ class LoginUseCaseTest {
                 .assertComplete()
                 .assertValue { userSession ->
                     userSession.sessionToken == sessionTokenEntity.token &&
-                            userSession.evenId == eventId
+                        userSession.evenId == eventId
                 }
                 .dispose()
 
@@ -138,7 +138,7 @@ class LoginUseCaseTest {
                 .assertComplete()
                 .assertValue { userSession ->
                     userSession.sessionToken == sessionTokenEntity.token &&
-                            userSession.evenId == eventId
+                        userSession.evenId == eventId
                 }
                 .dispose()
 
