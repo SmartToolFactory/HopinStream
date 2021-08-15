@@ -18,7 +18,7 @@ interface LoginRepository {
 
     // Remote operation
     suspend fun fetchSessionTokenFromRemote(
-        cookie: String,
+        token: String,
         eventSlug: SessionTokenRequest
     ): SessionTokenEntity
 }
@@ -34,10 +34,10 @@ class LoginRepositoryImpl @Inject constructor(
 ) : LoginRepository {
 
     override suspend fun fetchSessionTokenFromRemote(
-        cookie: String,
+        token: String,
         eventSlug: SessionTokenRequest
     ): SessionTokenEntity {
-        val sessionToken: SessionTokenDTO = remoteDataSource.getSessionTokenDTO(cookie, eventSlug)
+        val sessionToken: SessionTokenDTO = remoteDataSource.getSessionTokenDTO(token, eventSlug)
         return mapper.map(sessionToken)
     }
 

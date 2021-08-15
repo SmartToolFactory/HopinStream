@@ -130,7 +130,8 @@ class LoginUseCaseTest {
             coEvery { repository.saveSessionToken(sessionTokenEntity) } returns 1
 
             // WHEN
-            val testObserver = loginUseCase.createUserSession(cookie, request).test(this)
+            val testObserver = loginUseCase
+                .createUserSession(cookie, "hopincon2022").test(this)
 
             // THEN
             testObserver
@@ -154,7 +155,6 @@ class LoginUseCaseTest {
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
-
             val sessionTokenEntity = SessionTokenEntity(sessionToken, System.currentTimeMillis())
             val eventId = 108564L
             coEvery {
@@ -169,7 +169,9 @@ class LoginUseCaseTest {
             coEvery { repository.saveSessionToken(sessionTokenEntity) } returns 1
 
             // WHEN
-            val testObserver = loginUseCase.createUserSession(cookie, request).test(this)
+            val testObserver =
+                loginUseCase.createUserSession(cookie, "hopincon2022")
+                    .test(this)
 
             // THEN
             testObserver
