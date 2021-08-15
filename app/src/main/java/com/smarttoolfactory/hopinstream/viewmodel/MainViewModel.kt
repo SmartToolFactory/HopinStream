@@ -3,6 +3,7 @@ package com.smarttoolfactory.hopinstream.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.smarttoolfactory.core.connectivity.ConnectionManager
+import com.smarttoolfactory.core.util.Event
 import com.smarttoolfactory.core.util.checkInternetConnectionFlow
 import com.smarttoolfactory.core.util.convertToFlowViewState
 import com.smarttoolfactory.core.viewstate.Status
@@ -24,7 +25,7 @@ class MainViewModel @Inject constructor(
     private val connectionManager: ConnectionManager
 ) : ViewModel() {
 
-    private val _loginState = MutableLiveData<ViewState<UserSession>>()
+    private val _loginState = MutableLiveData<Event<ViewState<UserSession>>>()
 
     val loginState
         get() = _loginState
@@ -34,7 +35,7 @@ class MainViewModel @Inject constructor(
             .checkInternetConnectionFlow(connectionManager)
             .convertToFlowViewState()
             .onStart {
-                _loginState.postValue(ViewState(status = Status.LOADING))
+                _loginState.postValue(Event(ViewState(status = Status.LOADING)))
             }
             .onEach {
 
@@ -42,7 +43,7 @@ class MainViewModel @Inject constructor(
                 if (it.status != Status.LOADING) {
                     delay(300)
                 }
-                _loginState.postValue(it)
+                _loginState.postValue(Event(it))
             }
             .launchIn(coroutineScope)
     }

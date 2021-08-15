@@ -2,7 +2,6 @@ package com.smarttoolfactory.hopinstream
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -24,40 +23,36 @@ class MainFragment : DynamicNavigationFragment<FragmentMainBinding>() {
 
         mainViewModel.loginState.observe(
             viewLifecycleOwner,
-            { viewState ->
+            { event ->
 
-                when (viewState.status) {
+                event.getContentIfNotHandled()?.let { viewState ->
+                    when (viewState.status) {
 
-                    Status.LOADING -> {
-                        dataBinding.progressBar.visibility = View.VISIBLE
-                        dataBinding.tvError.visibility = View.GONE
-                    }
+                        Status.LOADING -> {
+                            dataBinding.progressBar.visibility = View.VISIBLE
+                            dataBinding.tvError.visibility = View.GONE
+                        }
 
-                    Status.SUCCESS -> {
-                        dataBinding.progressBar.visibility = View.GONE
+                        Status.SUCCESS -> {
+                            dataBinding.progressBar.visibility = View.GONE
+                            val direction = MainFragmentDirections
+                                .actionMainFragmentToStageFragment(viewState.data!!)
 
-//                    val direction =
-//                        MainFragmentDirections.actionMainFragmentToStageFragment(viewState.data!!)
+                            navigateWithInstallMonitor(
+                                navController = findNavController(),
+                                resId = R.id.nav_graph_stage,
+                                directions = direction
+                            )
+                        }
 
-                        val bundle = bundleOf("sessionArgs" to viewState.data!!)
-
-                        navigateWithInstallMonitor(
-                            findNavController(),
-                            R.id.nav_graph_stage,
-                            bundle
-                        )
-                    }
-
-                    Status.ERROR -> {
-                        dataBinding.progressBar.visibility = View.GONE
-                        processError(viewState.error)
+                        Status.ERROR -> {
+                            dataBinding.progressBar.visibility = View.GONE
+                            processError(viewState.error)
+                        }
                     }
                 }
             }
         )
-
-//        navigateWithInstallMonitor( v, R.id.nav_graph_login)
-//        navigateWithInstallMonitor(findNavController(), R.id.nav_graph_stage)
     }
 
     private fun processError(error: Throwable?) {
@@ -69,7 +64,15 @@ class MainFragment : DynamicNavigationFragment<FragmentMainBinding>() {
                 ).show()
             }
             is TokenNotAvailableException -> {
-                navigateWithInstallMonitor(findNavController(), R.id.nav_graph_login)
+
+                val direction = MainFragmentDirections
+                    .actionMainFragmentToLoginFragment()
+
+                navigateWithInstallMonitor(
+                    findNavController(),
+                    resId = R.id.nav_graph_login,
+                    directions = direction
+                )
             }
             else -> {
                 Snackbar.make(

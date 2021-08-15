@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.smarttoolfactory.core.connectivity.ConnectionManager
+import com.smarttoolfactory.core.util.Event
 import com.smarttoolfactory.core.util.checkInternetConnectionFlow
 import com.smarttoolfactory.core.util.convertToFlowViewState
 import com.smarttoolfactory.core.viewstate.Status
@@ -24,8 +25,7 @@ class LoginViewModel @Inject constructor(
     private val connectionManager: ConnectionManager
 ) : ViewModel() {
 
-    private val _loginState = MutableLiveData<ViewState<UserSession>>()
-
+    private val _loginState = MutableLiveData<Event<ViewState<UserSession>>>()
     val loginState
         get() = _loginState
 
@@ -38,10 +38,10 @@ class LoginViewModel @Inject constructor(
             .checkInternetConnectionFlow(connectionManager)
             .convertToFlowViewState()
             .onStart {
-                _loginState.postValue(ViewState(status = Status.LOADING))
+                _loginState.postValue(Event(ViewState(status = Status.LOADING)))
             }
             .onEach {
-                _loginState.postValue(it)
+                _loginState.postValue(Event(it))
             }
             .launchIn(coroutineScope)
     }
