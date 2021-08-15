@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // 🔥 Opens MainFragment which uses avController to navigate to dynamic feature module
         setContentView(R.layout.activity_main)
 

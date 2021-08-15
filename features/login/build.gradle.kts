@@ -7,6 +7,7 @@ plugins {
     id(Plugins.KOTLIN_ANDROID_PLUGIN)
     id(Plugins.KOTLIN_KAPT_PLUGIN)
     id(Plugins.DAGGER_HILT_PLUGIN)
+    id(Plugins.NAVIGATION_SAFE_ARGS)
 }
 
 android {

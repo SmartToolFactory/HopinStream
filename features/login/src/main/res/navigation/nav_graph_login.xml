@@ -5,9 +5,21 @@
     android:id="@id/nav_graph_login"
     app:moduleName="login"
     app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.smarttoolfactory.login.LoginFragment"
         android:label="Login Fragment"
         tools:layout="@layout/fragment_login" />
+
+    <include-dynamic
+        android:id="@+id/nav_graph_stage"
+        android:name="com.smarttoolfactory.stage"
+        app:graphResName="nav_graph_stage"
+        app:moduleName="stage">
+
+<!--        <argument-->
+<!--            android:name="sessionArgs"-->
+<!--            app:argType="com.smarttoolfactory.domain.model.UserSession" />-->
+    </include-dynamic>
 </navigation>

@@ -5,6 +5,7 @@ import androidx.annotation.IdRes
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.dynamicfeatures.DynamicExtras
 import androidx.navigation.dynamicfeatures.DynamicInstallMonitor
@@ -22,17 +23,21 @@ abstract class DynamicNavigationFragment<ViewBinding : ViewDataBinding> :
         navController: NavController,
         @IdRes resId: Int,
         args: Bundle? = null,
+        directions: NavDirections? = null,
         navOptions: NavOptions? = null,
     ) {
-
         val installMonitor = DynamicInstallMonitor()
 
-        navController.navigate(
-            resId,
-            args,
-            navOptions,
-            DynamicExtras(installMonitor)
-        )
+        if (directions != null) {
+            navController.navigate(directions, DynamicExtras(installMonitor))
+        } else {
+            navController.navigate(
+                resId,
+                args,
+                navOptions,
+                DynamicExtras(installMonitor)
+            )
+        }
 
         println("DynamicInstallFragment isInstallRequired: ${installMonitor.isInstallRequired}")
 
