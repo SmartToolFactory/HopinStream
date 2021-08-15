@@ -70,15 +70,15 @@ class LoginUseCase @Inject constructor(
             .flowOn(dispatcherProvider.defaultDispatcher)
     }
 
-    fun getTokenFromCookies(cookies: String):String? {
+    fun getTokenFromCookies(cookies: String): String? {
 
         val regex = "user.token="
 
-        if(!cookies.contains(regex)) {
+        if (!cookies.contains(regex)) {
             return null
         }
 
-      return  cookies.substring(
+        return cookies.substring(
             cookies.indexOf(regex),
             cookies.indexOf(";", cookies.indexOf(regex))
         )
