@@ -9,19 +9,42 @@
         android:id="@+id/mainFragment"
         android:name="com.smarttoolfactory.hopinstream.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/nav_graph_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_stageFragment"
+            app:destination="@id/nav_graph_stage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
 
     <!-- dynamic feature module-->
     <include-dynamic
         android:id="@+id/nav_graph_login"
         android:name="com.smarttoolfactory.login"
         app:graphResName="nav_graph_login"
-        app:moduleName="login"/>
+        app:moduleName="login" />
 
     <include-dynamic
         android:id="@+id/nav_graph_stage"
         android:name="com.smarttoolfactory.stage"
         app:graphResName="nav_graph_stage"
-        app:moduleName="stage"/>
+        app:moduleName="stage">
+
+<!--        <argument-->
+<!--            android:name="sessionArgs"-->
+<!--            app:argType="com.smarttoolfactory.domain.model.UserSession" />-->
+    </include-dynamic>
 
 </navigation>
