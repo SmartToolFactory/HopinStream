@@ -26,4 +26,5 @@ object Plugins {
 
     const val KOTLIN_ANDROID_PLUGIN = "kotlin-android"
     const val KOTLIN_KAPT_PLUGIN = "kotlin-kapt"
+    const val NAVIGATION_SAFE_ARGS = "androidx.navigation.safeargs.kotlin"
 }

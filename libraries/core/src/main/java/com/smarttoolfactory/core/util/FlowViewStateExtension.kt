@@ -29,7 +29,6 @@ fun <T> Flow<T>.checkInternetConnectionFlow(
 ): Flow<T> {
     return this
         .onStart {
-            println("‼️ Internet Connection is:$connectionManager")
             if (!connectionManager.isNetworkAvailable()) {
                 throw NoConnectivityException("Make sure that you are connected a network")
             }
