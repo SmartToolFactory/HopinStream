@@ -84,9 +84,10 @@ android {
         kotlinCompilerExtensionVersion = Version.COMPOSE_VERSION
     }
 
-//    dynamicFeatures.apply {
-//
-//    }
+    dynamicFeatures.apply {
+        add(Modules.DynamicFeature.LOGIN)
+        add(Modules.DynamicFeature.STAGE)
+    }
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
