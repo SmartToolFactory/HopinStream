@@ -10,8 +10,8 @@
         android:name="com.smarttoolfactory.stage.StageFragment"
         android:label="Stage Fragment"
         tools:layout="@layout/fragment_stage">
-<!--        <argument-->
-<!--            android:name="sessionArgs"-->
-<!--            app:argType="com.smarttoolfactory.domain.model.UserSession" />-->
+        <argument
+            android:name="sessionArgs"
+            app:argType="com.smarttoolfactory.domain.model.UserSession" />
     </fragment>
 </navigation>

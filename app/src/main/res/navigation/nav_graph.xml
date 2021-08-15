@@ -42,9 +42,9 @@
         app:graphResName="nav_graph_stage"
         app:moduleName="stage">
 
-<!--        <argument-->
-<!--            android:name="sessionArgs"-->
-<!--            app:argType="com.smarttoolfactory.domain.model.UserSession" />-->
+        <argument
+            android:name="sessionArgs"
+            app:argType="com.smarttoolfactory.domain.model.UserSession" />
     </include-dynamic>
 
 </navigation>

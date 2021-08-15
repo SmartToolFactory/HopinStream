@@ -50,11 +50,11 @@ class LoginUseCase @Inject constructor(
      * Get session token from remote server via REST api
      */
     fun createUserSession(
-        cookie: String,
-        eventSlug: SessionTokenRequest
+        token: String,
+        eventSlug: String
     ): Flow<UserSession> {
         return flow {
-            emit(repository.fetchSessionTokenFromRemote(cookie, eventSlug))
+            emit(repository.fetchSessionTokenFromRemote(token, SessionTokenRequest(eventSlug)))
         }
             .map { sessionTokenEntity ->
 
@@ -68,5 +68,19 @@ class LoginUseCase @Inject constructor(
                 UserSession(sessionToken = token, eventId)
             }
             .flowOn(dispatcherProvider.defaultDispatcher)
+    }
+
+    fun getTokenFromCookies(cookies: String):String? {
+
+        val regex = "user.token="
+
+        if(!cookies.contains(regex)) {
+            return null
+        }
+
+      return  cookies.substring(
+            cookies.indexOf(regex),
+            cookies.indexOf(";", cookies.indexOf(regex))
+        )
     }
 }
