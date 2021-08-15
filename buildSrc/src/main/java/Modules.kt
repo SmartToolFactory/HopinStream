@@ -13,6 +13,7 @@ object Modules {
      * Dynamic Feature Modules
      */
     object DynamicFeature {
-
+        const val LOGIN = ":features:login"
+        const val STAGE = ":features:stage"
     }
 }
