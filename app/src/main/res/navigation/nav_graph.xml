@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.smarttoolfactory.hopinstream.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/nav_graph_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_stageFragment"
+            app:destination="@id/nav_graph_stage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <!-- dynamic feature module-->
+    <include-dynamic
+        android:id="@+id/nav_graph_login"
+        android:name="com.smarttoolfactory.login"
+        app:graphResName="nav_graph_login"
+        app:moduleName="login" />
+
+    <include-dynamic
+        android:id="@+id/nav_graph_stage"
+        android:name="com.smarttoolfactory.stage"
+        app:graphResName="nav_graph_stage"
+        app:moduleName="stage">
+
+        <argument
+            android:name="sessionArgs"
+            app:argType="com.smarttoolfactory.domain.model.UserSession" />
+    </include-dynamic>
+
+</navigation>

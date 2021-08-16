@@ -6,7 +6,8 @@ plugins {
     id(Plugins.ANDROID_APPLICATION_PLUGIN)
     id(Plugins.KOTLIN_ANDROID_PLUGIN)
     id(Plugins.KOTLIN_KAPT_PLUGIN)
-//    id(Plugins.DAGGER_HILT_PLUGIN)
+    id(Plugins.DAGGER_HILT_PLUGIN)
+    id(Plugins.NAVIGATION_SAFE_ARGS)
 }
 
 android {
@@ -84,9 +85,10 @@ android {
         kotlinCompilerExtensionVersion = Version.COMPOSE_VERSION
     }
 
-//    dynamicFeatures.apply {
-//
-//    }
+    dynamicFeatures.apply {
+        add(Modules.DynamicFeature.LOGIN)
+        add(Modules.DynamicFeature.STAGE)
+    }
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -96,6 +98,9 @@ android {
 dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation(project(Modules.AndroidLibrary.CORE))
+    implementation(project(Modules.AndroidLibrary.DOMAIN))
     implementation(project(Modules.AndroidLibrary.DATA))
 
     addAppModuleDependencies()

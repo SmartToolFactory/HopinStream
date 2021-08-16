@@ -1,0 +1,107 @@
+{
+  "name": "Hopin Stage",
+  "uuid": "82604620-18b0-424c-b550-c74019551ba8",
+  "external_id": "I4lIzQjrK7mPrIOar2ndQ82oI",
+  "stream_provider": "hopin",
+  "video_url": "",
+  "is_usable": true,
+  "is_live": false,
+  "broadcast_channel_name": "stage_82604620-18b0-424c-b550-c74019551ba8",
+  "stage_channel_name": "stage_82604620-18b0-424c-b550-c74019551ba8",
+  "broadcasts": [
+    {
+      "uuid": "d5dce6cc-ba5c-4a95-8610-2fac3a1c1768",
+      "stream_url": "https://stream.mux.com/NGYC23X5B502VC6Gm01mIojY52bbgOVDV7.m3u8",
+      "status": "inactive",
+      "broadcast_type": "mixer",
+      "delivery_type": "mux"
+    },
+    {
+      "uuid": "1b665ce5-e9d4-46f8-9eb5-d3e14a49e691",
+      "stream_url": "https://stream.mux.com/yTYFE1f1Jh8Xequ02tOjKwLtzvwBv5tIT.m3u8",
+      "status": "inactive",
+      "broadcast_type": "rtmp",
+      "delivery_type": "mux"
+    },
+    {
+      "uuid": "1c566f9f-b39a-45c0-a904-bc2dbc0c0df9",
+      "stream_url": "https://stream.mux.com/5zAGxBfjOJNJtpnR026lIDhng0222NcFrJ.m3u8",
+      "status": "inactive",
+      "broadcast_type": "session",
+      "delivery_type": "mux"
+    }
+  ],
+  "additional_information": "<p><strong>Example of a Hybrid Event on Hopin - link here to ebook: </strong><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://hopin.com/blog/hybrid-events\"><strong>https://hopin.com/blog/hybrid-events</strong></a></p><figure class=\"media\"><oembed url=\"https://youtu.be/Ip_syk1H_Bo\"></oembed></figure>",
+  "video_channels": [
+    {
+      "uuid": "d5dce6cc-ba5c-4a95-8610-2fac3a1c1768",
+      "stream_url": "https://stream.mux.com/NGYC23X5B502VC6Gm01mIojY52bbgOVDV7.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "mixer"
+    },
+    {
+      "uuid": "1b665ce5-e9d4-46f8-9eb5-d3e14a49e691",
+      "stream_url": "https://stream.mux.com/yTYFE1f1Jh8Xequ02tOjKwLtzvwBv5tIT.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "rtmp"
+    },
+    {
+      "uuid": "1c566f9f-b39a-45c0-a904-bc2dbc0c0df9",
+      "stream_url": "https://stream.mux.com/5zAGxBfjOJNJtpnR026lIDhng0222NcFrJ.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "session"
+    },
+    {
+      "uuid": "da74dc01-7b41-4139-85af-e933dab3d653",
+      "stream_url": "https://stream.mux.com/yh2glTFypTzfkghrP1bcva00m6YvFZLdW.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "rtmp"
+    },
+    {
+      "uuid": "b204d15c-a04a-4196-8303-4e63ccd0cb11",
+      "stream_url": "https://stream.mux.com/rIB01sRttaxDy4dY8eENEMC8SBeOK8DoL.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "mixer"
+    },
+    {
+      "uuid": "790b1840-2599-4b09-8b13-e5250feea54b",
+      "stream_url": "https://cmaf.hopin.com/hls/d9247c4d-626e-40f2-be3e-d47869aba9bf/ls-master.m3u8",
+      "status": "inactive",
+      "delivery_type": "hopin",
+      "broadcast_type": "rtmp"
+    },
+    {
+      "uuid": "30107afe-44ad-4ae1-945c-f1d33351e250",
+      "stream_url": "https://cmaf.hopin.com/hls/081be157-82c1-4e7e-8cdc-22a7d8eeb102/ls-master.m3u8",
+      "status": "active",
+      "delivery_type": "hopin",
+      "broadcast_type": "mixer"
+    },
+    {
+      "uuid": "efe5d449-ea63-41d0-b551-3fa9420f2aa3",
+      "stream_url": "https://167b4551ff40.us-east-1.playback.live-video.net/api/video/v1/us-east-1.148890269452.channel.ZYvro73jKq3G.m3u8",
+      "status": "inactive",
+      "delivery_type": "ivs",
+      "broadcast_type": "rtmp"
+    },
+    {
+      "uuid": "be9d5e80-f543-42f8-88b9-8a92d678bf42",
+      "stream_url": "https://stream.mux.com/Uy7vxvmt9e3VQdp9vPMl55p9Y1BbzA1p.m3u8",
+      "status": "inactive",
+      "delivery_type": "mux",
+      "broadcast_type": "rtmp"
+    },
+    {
+      "uuid": "a1b7cf99-8f5d-4ac6-b459-05da11daeafc",
+      "stream_url": "https://167b4551ff40.us-east-1.playback.live-video.net/api/video/v1/us-east-1.148890269452.channel.yXLkYDxJxNQm.m3u8?token=eyJhbGciOiJFUzM4NCJ9.eyJhd3M6Y2hhbm5lbC1hcm4iOiJhcm46YXdzOml2czp1cy1lYXN0LTE6MTQ4ODkwMjY5NDUyOmNoYW5uZWwveVhMa1lEeEp4TlFtIiwiYXdzOmFjY2Vzcy1jb250cm9sLWFsbG93LW9yaWdpbiI6Imh0dHBzOi8vYXBwLmhvcGluLmNvbSIsImV4cCI6MTkzNzQ2MTQ0MH0.cep_iO_3007KQY6hCkE4iDJdU9IHEvncWjA6g_HiuUl-IIyPj6eZrWZFB62mmwQj50WVpbBAvbJBUd6CAqTFRAwAXdsW6NWzGbi0SSxfu3x6dLFC3_opdOQXmBjX60yM",
+      "status": "inactive",
+      "delivery_type": "ivs",
+      "broadcast_type": "rtmp"
+    }
+  ]
+}

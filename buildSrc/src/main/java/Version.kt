@@ -47,16 +47,13 @@ object Version {
     const val NAVIGATION_VERSION = "2.3.0"
 
     // Retrofit
-    const val RETROFIT_VERSION = "2.8.1"
+    const val RETROFIT_VERSION = "2.9.0"
 
     // OkHttpClient
-    const val OK_HTTP3_VERSION = "4.8.1"
-
-    // MockWebServer
-    const val MOCK_WEB_SERVER_VERSION = "3.7.0"
+    const val OK_HTTP3_VERSION = "4.9.0"
 
     //Gson
-    const val GSON_VERSION = "2.8.4"
+    const val GSON_VERSION = "2.8.7"
 
     // Room
     const val ROOM_VERSION = "2.4.0-alpha02"
@@ -91,16 +88,19 @@ object Version {
     // Compose
     const val COMPOSE_VERSION ="1.0.0"
     const val COMPOSE_ACTIVITY_VERSION="1.3.1"
+
+    // Exoplayer
+    const val EXOPLAYER_VERSION = "2.15.0"
 }
 
 object TestVersion {
 
     // AndroidX 
     const val androidXVersion = "1.0.0"
-    const val androidXTestCoreVersion = "1.2.0"
-    const val androidXTestExtKotlinRunnerVersion = "1.1.1"
+    const val androidXTestCoreVersion = "1.4.0"
+    const val androidXTestExtKotlinRunnerVersion = "1.1.3-rc01"
     const val androidXTestRulesVersion = "1.2.0-beta01"
-    const val archTestingVersion = "2.0.0"
+    const val archTestingVersion = "2.1.0"
 
     // Junit5
     const val junit5Version = "5.4.0"
@@ -112,14 +112,14 @@ object TestVersion {
     const val robolectricVersion = "4.3.1"
     const val rulesVersion = "1.0.1"
 
-    const val coroutinesTestVersion = "1.3.7"
+    const val coroutinesTestVersion = "1.5.1"
 
     // MockWebServer
-    const val mockWebServerVersion = "4.8.1"
+    const val mockWebServerVersion = "4.9.0"
 
     // Truth Assertion
     const val truthVersion = "1.0.1"
 
     // MockK
-    const val mockKVersion = "1.10.0"
+    const val mockKVersion = "1.12.0"
 }
