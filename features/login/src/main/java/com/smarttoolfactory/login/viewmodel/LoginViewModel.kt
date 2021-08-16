@@ -1,5 +1,6 @@
 package com.smarttoolfactory.login.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +27,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _loginState = MutableLiveData<Event<ViewState<UserSession>>>()
-    val loginState
+    val loginState: LiveData<Event<ViewState<UserSession>>>
         get() = _loginState
 
     fun getTokenFromCookies(cookies: String): String? {

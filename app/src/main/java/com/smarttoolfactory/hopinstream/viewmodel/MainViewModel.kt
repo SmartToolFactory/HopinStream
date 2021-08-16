@@ -1,5 +1,6 @@
 package com.smarttoolfactory.hopinstream.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.smarttoolfactory.core.connectivity.ConnectionManager
@@ -27,7 +28,7 @@ class MainViewModel @Inject constructor(
 
     private val _loginState = MutableLiveData<Event<ViewState<UserSession>>>()
 
-    val loginState
+    val loginState: LiveData<Event<ViewState<UserSession>>>
         get() = _loginState
 
     init {

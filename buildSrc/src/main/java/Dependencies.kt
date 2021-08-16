@@ -104,6 +104,17 @@ object Compose {
         "androidx.activity:activity-compose:${Version.COMPOSE_ACTIVITY_VERSION}"
 }
 
+object ExoPlayer {
+    const val EXOPLAYER =
+        "com.google.android.exoplayer:exoplayer:${Version.EXOPLAYER_VERSION}"
+    const val EXOPLAYER_CORE =
+        "com.google.android.exoplayer:exoplayer-core:${Version.EXOPLAYER_VERSION}"
+    const val EXOPLAYER_DASH =
+        "com.google.android.exoplayer:exoplayer-dash:${Version.EXOPLAYER_VERSION}"
+    const val EXOPLAYER_UI =
+        "com.google.android.exoplayer:exoplayer-ui:${Version.EXOPLAYER_VERSION}"
+}
+
 object TestDeps {
 
     // (Required) Writing and executing Unit Tests on the JUnit Platform
