@@ -97,18 +97,17 @@ class LoginFragment : DynamicNavigationFragment<FragmentLoginBinding>() {
     }
 
     private fun processError(error: Throwable?) {
-        when (error) {
+        dataBinding.tvStatus.text = when (error) {
             is NoConnectivityException -> {
-                dataBinding.tvStatus.text = "Make sure that you are connected to internet"
+                "Make sure that you are connected to internet"
             }
-
             else -> {
                 error?.message?.apply {
                     if (contains("401")) {
-                        dataBinding.tvStatus.text = "Http 401 error, Requires authentication"
+                        "Http 401 error, Requires authentication"
                     }
                 } ?: run {
-                    dataBinding.tvStatus.text = "Error occurred: ${error?.message}"
+                    "Error occurred: ${error?.message}"
                 }
             }
         }
